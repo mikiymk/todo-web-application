@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Todo application</title>
+</head>
+<body>
+  <h1>Todo</h1>
+  <ul id="list">
+    <li>sample task</li>
+    <li>
+      <label>
+        new task name
+        <input id="input-name" />
+      </label>
+      <button id="add-button">click to add new task</button>
+    </li>
+  </ul>
+  <script>
+    function get(id) {
+      var elem;
+      elem = document.getElementById("list");
+      return elem;
+    }
+
+    function html(tagname, attributes, children) {
+      var elem, key;
+      elem = document.createElement(tagname);
+      for (key in attributes) {
+        elem.setAttribute(key, attributes[key]);
+      }
+      for (key in children) {
+        elem.append(children[key]);
+      }
+      return elem;
+    }
+
+    function addTask(taskname) {
+      var elem, listelem;
+      elem = html("li", {}, [taskname]);
+      listelem = get("list");
+      listelem.insertBefore(elem, listelem.lastChild);
+    }
+
+    function onClick(event) {
+      var elem;
+      elem = get("input-name");
+      addTask(elem.value);
+    }
+
+    get("add-button").addEventListener("click", onClick);
+  </script>
+</body>
+</html>
