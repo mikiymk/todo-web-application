@@ -7,7 +7,6 @@
 <body>
   <h1>Todo</h1>
   <ul id="list">
-    <li>sample task</li>
     <li>
       <label>
         new task name
@@ -37,9 +36,12 @@
 
     function addTask(taskname) {
       var elem, listelem;
-      elem = html("li", {}, [taskname]);
+      elem = html("li", {}, [
+        html("input", { type: "checkbox" }, []),
+        taskname,
+      ]);
       listelem = get("list");
-      listelem.insertBefore(elem, listelem.lastChild);
+      listelem.append(elem);
     }
 
     function onClick(event) {
