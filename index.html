@@ -6,6 +6,7 @@
 </head>
 <body>
   <h1>Todo</h1>
+  <div id="app"></div>
   <ul id="list">
     <li>
       <label>
@@ -16,6 +17,7 @@
     </li>
   </ul>
   <script>
+    // render
     function get(id) {
       var elem;
       elem = document.getElementById(id);
@@ -26,7 +28,11 @@
       var elem, key;
       elem = document.createElement(tagname);
       for (key in attributes) {
-        elem.setAttribute(key, attributes[key]);
+        if (key.startWith("on")) {
+          elem.addEventListener(key.substring(2), attributes[key]);
+        } else {
+          elem.setAttribute(key, attributes[key]);
+        }
       }
       for (key in children) {
         elem.append(children[key]);
@@ -34,12 +40,61 @@
       return elem;
     }
 
-    function addTask(taskname) {
-      var elem, listelem;
+    function render(html, elem) {
+      elem.append(html);
+    }
+
+    // reactive
+    function reactive(value) {
+      return value;
+    }
+
+    // components
+    function Main() {
+      var elem, tasks;
+      tasks = reactive([]);
+      function add(taskname) {
+        tasks.push(taskname);
+      }
+      elem = html("li", {}, [
+        AddButton(add),
+        ...tasks.map(Task),
+      ]);
+      return elem;
+    }
+
+    function AddButton(add) {
+      var elem, value;
+      value = reactive("");
+      function onchange(event) {
+        value = event.currentTarget.value;
+      }
+      function onclick(event) {
+        add(value);
+      }
+      elem = html("li", {}, [
+        html("label", {}, [
+          "new task name",
+          html("input", { value, onchange }, []),
+        ]),
+        html("button", { onclick }, ["click to add"]),
+      ]);
+      return elem;
+    }
+
+    function Task(taskname) {
+      var elem;
       elem = html("li", {}, [
         html("input", { type: "checkbox" }, []),
         taskname,
       ]);
+      return elem;
+    }
+
+    // functions
+    function addTask(taskname) {
+      var elem, listelem;
+      elem = Task(taskname);
       listelem = get("list");
       listelem.append(elem);
     }
@@ -50,6 +105,8 @@
       addTask(elem.value);
     }
 
+    // init
+    render(Main(), get("app"));
     get("add-button").addEventListener("click", onClick);
   </script>
 </body>
