@@ -17,97 +17,97 @@
     </li>
   </ul>
   <script>
-    // render
-    function get(id) {
-      var elem;
-      elem = document.getElementById(id);
-      return elem;
-    }
+// render
+function get(id) {
+  var elem;
+  elem = document.getElementById(id);
+  return elem;
+}
 
-    function html(tagname, attributes, children) {
-      var elem, key;
-      elem = document.createElement(tagname);
-      for (key in attributes) {
-        if (key.startWith("on")) {
-          elem.addEventListener(key.substring(2), attributes[key]);
-        } else {
-          elem.setAttribute(key, attributes[key]);
-        }
-      }
-      for (key in children) {
-        elem.append(children[key]);
-      }
-      return elem;
+function html(tagname, attributes, children) {
+  var elem, key;
+  elem = document.createElement(tagname);
+  for (key in attributes) {
+    if (key.startWith("on")) {
+      elem.addEventListener(key.substring(2), attributes[key]);
+    } else {
+      elem.setAttribute(key, attributes[key]);
     }
+  }
+  for (key in children) {
+    elem.append(children[key]);
+  }
+  return elem;
+}
 
-    function render(html, elem) {
-      elem.append(html);
-    }
+function render(html, elem) {
+  elem.append(html);
+}
 
     // reactive
-    function reactive(value) {
-      return value;
-    }
+function reactive(value) {
+  return value;
+}
 
     // components
-    function Main() {
-      var elem, tasks;
-      tasks = reactive([]);
-      function add(taskname) {
-        tasks.push(taskname);
-      }
-      elem = html("li", {}, [
-        AddButton(add),
-        ...tasks.map(Task),
-      ]);
-      return elem;
-    }
+function Main() {
+  var elem, tasks;
+  tasks = reactive([]);
+  function add(taskname) {
+    tasks.push(taskname);
+  }
+  elem = html("li", {}, [
+    AddButton(add),
+    ...tasks.map(Task),
+  ]);
+  return elem;
+}
 
-    function AddButton(add) {
-      var elem, value;
-      value = reactive("");
-      function onchange(event) {
-        value = event.currentTarget.value;
-      }
-      function onclick(event) {
-        add(value);
-      }
-      elem = html("li", {}, [
-        html("label", {}, [
-          "new task name",
-          html("input", { value, onchange }, []),
-        ]),
-        html("button", { onclick }, ["click to add"]),
-      ]);
-      return elem;
-    }
+function AddButton(add) {
+  var elem, value;
+  value = reactive("");
+  function onchange(event) {
+    value = event.currentTarget.value;
+  }
+  function onclick(event) {
+    add(value);
+  }
+  elem = html("li", {}, [
+    html("label", {}, [
+      "new task name",
+      html("input", { value, onchange }, []),
+    ]),
+    html("button", { onclick }, ["click to add"]),
+  ]);
+  return elem;
+}
 
-    function Task(taskname) {
-      var elem;
-      elem = html("li", {}, [
-        html("input", { type: "checkbox" }, []),
-        taskname,
-      ]);
-      return elem;
-    }
+function Task(taskname) {
+  var elem;
+  elem = html("li", {}, [
+    html("input", { type: "checkbox" }, []),
+    taskname,
+  ]);
+  return elem;
+}
 
-    // functions
-    function addTask(taskname) {
-      var elem, listelem;
-      elem = Task(taskname);
-      listelem = get("list");
-      listelem.append(elem);
-    }
+// functions
+function addTask(taskname) {
+  var elem, listelem;
+  elem = Task(taskname);
+  listelem = get("list");
+  listelem.append(elem);
+}
 
-    function onClick(event) {
-      var elem;
-      elem = get("input-name");
-      addTask(elem.value);
-    }
+function onClick(event) {
+  var elem;
+  elem = get("input-name");
+  addTask(elem.value);
+}
 
-    // init
-    render(Main(), get("app"));
-    get("add-button").addEventListener("click", onClick);
+// init
+render(Main(), get("app"));
+get("add-button").addEventListener("click", onClick);
   </script>
 </body>
 </html>
