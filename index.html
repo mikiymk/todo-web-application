@@ -18,96 +18,90 @@
   </ul>
   <script>
 // render
-function get(id) {
-  var elem;
-  elem = document.getElementById(id);
-  return elem;
-}
+const get = id => document.getElementById(id);
 
-function html(tagname, attributes, children) {
-  var elem, key;
-  elem = document.createElement(tagname);
-  for (key in attributes) {
+const html = (tagname, attributes, children) => {
+  const elem = document.createElement(tagname);
+  for (const [key, attribute] in Object.entries(attributes)) {
     if (key.startWith("on")) {
-      elem.addEventListener(key.substring(2), attributes[key]);
+      elem.addEventListener(key.substring(2), attribute);
     } else {
-      elem.setAttribute(key, attributes[key]);
+      elem.setAttribute(key, attribute);
     }
   }
   for (key in children) {
     elem.append(children[key]);
   }
   return elem;
-}
+};
 
-function render(html, elem) {
+const render = (html, elem) => {
   elem.append(html);
-}
+};
 
-    // reactive
-function reactive(value) {
+// reactive
+const reactive = (value) => {
   return value;
-}
+};
 
-    // components
-function Main() {
-  var elem, tasks;
-  tasks = reactive([]);
-  function add(taskname) {
-    tasks.push(taskname);
-  }
-  elem = html("li", {}, [
+// components
+const Main = () => {
+  const tasks = reactive([]);
+  const add = (taskname) => tasks.push(taskname);
+
+  return html("li", {}, [
     AddButton(add),
     ...tasks.map(Task),
   ]);
-  return elem;
-}
+};
 
-function AddButton(add) {
-  var elem, value;
-  value = reactive("");
-  function onchange(event) {
+const AddButton = (add) => {
+  const value = reactive("");
+  const onchange = (event) => {
     value = event.currentTarget.value;
-  }
-  function onclick(event) {
+  };
+  const onclick = (event) => {
     add(value);
-  }
-  elem = html("li", {}, [
+  };
+
+  return html("li", {}, [
     html("label", {}, [
       "new task name",
       html("input", { value, onchange }, []),
     ]),
     html("button", { onclick }, ["click to add"]),
   ]);
-  return elem;
-}
+};
 
-function Task(taskname) {
-  var elem;
-  elem = html("li", {}, [
+const Task = (taskname) => {
+  return html("li", {}, [
     html("input", { type: "checkbox" }, []),
     taskname,
   ]);
-  return elem;
-}
+};
 
 // functions
-function addTask(taskname) {
-  var elem, listelem;
-  elem = Task(taskname);
-  listelem = get("list");
+const addTask = (taskname) => {
+  const elem = Task(taskname);
+  const listelem = get("list");
   listelem.append(elem);
-}
+};
 
-function onClick(event) {
-  var elem;
-  elem = get("input-name");
+const onClick = (event) => {
+  const elem = get("input-name");
   addTask(elem.value);
-}
+};
 
 // init
-render(Main(), get("app"));
-get("add-button").addEventListener("click", onClick);
+try {
+  render(Main(), get("app"));
+  get("add-button").addEventListener("click", onClick);
+} catch(e) {
+  alert("no goodness: " + e);
+} finally {
+  alert("goodness");
+}
+
   </script>
 </body>
 </html>
