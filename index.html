@@ -23,7 +23,7 @@ const get = id => document.getElementById(id);
 const html = (tagname, attributes, children) => {
   const elem = document.createElement(tagname);
   for (const [key, attribute] in Object.entries(attributes)) {
-    if (key.startWith("on")) {
+    if (key.startsWith("on")) {
       elem.addEventListener(key.substring(2), attribute);
     } else {
       elem.setAttribute(key, attribute);
