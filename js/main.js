@@ -73,17 +73,26 @@ const onClick = (event) => {
   addTask(elem.value);
 };
 
+const mainelem, appelem;
+
 // init
 try {
-  render(Main(), get("app"));
+  mainelem = Main();
 } catch(e) {
   alert("no goodness 1: " + e);
 }
 
 try {
-  get("add-button").addEventListener("click", onClick);
+  appelem = get("app");
 } catch(e) {
   alert("no goodness 2: " + e);
 }
 
+try {
+  render(mainelem, appelem);
+} catch(e) {
+  alert("no goodness 3: " + e);
+}
+
+get("add-button").addEventListener("click", onClick);
 alert("goodness");
