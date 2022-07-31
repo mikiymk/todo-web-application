@@ -25,6 +25,31 @@ const reactive = (value) => {
   return value;
 };
 
+const createSignal = (value) => {
+  const dispatchers = [];
+  let currentValue = value;
+
+  const getValue = (dispatcher) => {
+    if (!dispatchers.includes(dispatcher)) {
+      dispatchers.push(dispatcher);
+    }
+
+    return currentValue;
+  };
+
+  const setValue = (newValue) => {
+    currentValue = newValue;
+
+    if (!Object.is(currentValue, newValue)) {
+      for (const dispatcher of dispatchers) {
+        dispatcher.dispatch();
+      }
+    }
+  };
+
+  return [getValue, setValue];
+};
+
 // components
 const Main = () => {
   const tasks = reactive([]);
