@@ -50,6 +50,16 @@ const createSignal = (value) => {
   return [getValue, setValue];
 };
 
+const createEffect = (effectFunction) => {
+  const dispatcher = {
+    dispatch() {
+      effectFunction(dispatcher);
+    }
+  };
+
+  dispatcher.dispatch();
+};
+
 // components
 const Main = () => {
   const tasks = reactive([]);
