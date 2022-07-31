@@ -76,9 +76,14 @@ const onClick = (event) => {
 // init
 try {
   render(Main(), get("app"));
+} catch(e) {
+  alert("no goodness 1: " + e);
+}
+
+try {
   get("add-button").addEventListener("click", onClick);
 } catch(e) {
-  alert("no goodness: " + e);
-} finally {
-  alert("goodness");
+  alert("no goodness 2: " + e);
 }
+
+alert("goodness");
