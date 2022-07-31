@@ -108,7 +108,7 @@ const onClick = (event) => {
   addTask(elem.value);
 };
 
-const mainelem, appelem;
+let mainelem, appelem;
 
 // init
 try {
