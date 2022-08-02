@@ -62,8 +62,8 @@ const createEffect = (effectFunction) => {
 
 // components
 const Main = () => {
-  const tasks = reactive([]);
-  const add = (taskname) => tasks.push(taskname);
+  const [tasks, setTasks] = createSignal([]);
+  const add = (taskname) => setTasks(tasks => [...tasks, taskname]);
 
   return html("li", {}, [
     AddButton(add),
@@ -72,12 +72,12 @@ const Main = () => {
 };
 
 const AddButton = (add) => {
-  const value = reactive("");
+  const [value, setValue] = createSignal("");
   const onchange = (event) => {
-    value = event.currentTarget.value;
+    setValue(event.currentTarget.value);
   };
   const onclick = (event) => {
-    add(value);
+    add(value());
   };
 
   return html("li", {}, [
@@ -117,17 +117,8 @@ try {
   alert("no goodness 1: " + e);
 }
 
-try {
-  appelem = get("app");
-} catch(e) {
-  alert("no goodness 2: " + e);
-}
-
-try {
-  render(mainelem, appelem);
-} catch(e) {
-  alert("no goodness 3: " + e);
-}
+appelem = get("app");
+render(mainelem, appelem);
 
 get("add-button").addEventListener("click", onClick);
 alert("goodness");
