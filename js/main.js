@@ -1,7 +1,15 @@
 // render
 const get = id => document.getElementById(id);
 
-const html = (tagname, attributes, children) => {
+const html = (tagname, attributes, ...children) => {
+  if (typeof tagname === "function") {
+    return tagname({ ...attributes, children });
+  }
+
+  return {
+    tagname,
+    attributes: { ...attributes, children },
+  };
   const elem = document.createElement(tagname);
   for (const [key, attribute] in Object.entries(attributes)) {
     if (key.startsWith("on")) {
