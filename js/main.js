@@ -65,13 +65,13 @@ const Main = () => {
   const [tasks, setTasks] = createSignal([]);
   const add = (taskname) => setTasks(tasks => [...tasks, taskname]);
 
-  return html("li", {}, [
-    AddButton(add),
-    ...tasks.map(Task),
-  ]);
+  return html("li", {},
+    html(AddButton, { add }),
+    ...tasks.map(taskname => html(Task, { taskname })),
+  );
 };
 
-const AddButton = (add) => {
+const AddButton = ({ add }) => {
   const [value, setValue] = createSignal("");
   const onchange = (event) => {
     setValue(event.currentTarget.value);
@@ -80,20 +80,20 @@ const AddButton = (add) => {
     add(value());
   };
 
-  return html("li", {}, [
-    html("label", {}, [
+  return html("li", {},
+    html("label", {},
       "new task name",
-      html("input", { value, onchange }, []),
-    ]),
-    html("button", { onclick }, ["click to add"]),
-  ]);
+      html("input", { value, onchange }),
+    ),
+    html("button", { onclick }, "click to add"),
+  );
 };
 
-const Task = (taskname) => {
-  return html("li", {}, [
-    html("input", { type: "checkbox" }, []),
+const Task = ({ taskname }) => {
+  return html("li", {},
+    html("input", { type: "checkbox" }),
     taskname,
-  ]);
+  );
 };
 
 // functions
