@@ -78,12 +78,11 @@ const mapArray = (array, mapFunction) => {
     }
   };
 
-  for (const item of array(totaldispatcher)) {
-    mapFunction(dispatcher => {
+  return array(totaldispatcher)
+    .map((item) => mapFunction(dispatcher => {
       dispatchers.set(dispatcher);
       return item;
-    });
-  }
+    }));
 };
 
 // components
