@@ -68,14 +68,36 @@ const createEffect = (effectFunction) => {
   dispatcher.dispatch();
 };
 
+const mapArray = (array, mapFunction) => {
+  const dispatchers = new Set();
+  const totaldispatcher = {
+    dispatch() {
+      for (const dispatcher of dispatchers) {
+        dispatcher.dispatch();
+      }
+    }
+  };
+
+  for (const item of array(totaldispatcher)) {
+    mapFunction(dispatcher => {
+      dispatchers.set(dispatcher);
+      return item;
+    });
+  }
+};
+
 // components
 const Main = () => {
   const [tasks, setTasks] = createSignal([]);
   const add = (taskname) => setTasks(tasks => [...tasks, taskname]);
 
+  createEffect((d) => {
+    console.log(tasks(d));
+  });
+
   return html("li", {},
     html(AddButton, { add }),
-    ...tasks.map(taskname => html(Task, { taskname })),
+    ...mapArray(tasks, taskname => html(Task, { taskname })),
   );
 };
 
