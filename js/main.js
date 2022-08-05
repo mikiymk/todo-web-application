@@ -25,7 +25,7 @@ const html = (tagname, attributes, ...children) => {
 };
 
 const render = (html, elem) => {
-  elem.append(html);
+  elem.append(JSON.stringify(html));
 };
 
 // reactive
@@ -137,17 +137,15 @@ const onClick = (event) => {
   addTask(elem.value);
 };
 
-let mainelem, appelem;
+const mainelem = Main();
+const appelem = get("app");
 
 // init
 try {
-  mainelem = Main();
+  render(mainelem, appelem);
 } catch(e) {
   alert("no goodness 1: " + e);
 }
-
-appelem = get("app");
-render(mainelem, appelem);
 
 get("add-button").addEventListener("click", onClick);
 alert("goodness");
