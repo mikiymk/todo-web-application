@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Todo application</title>
+</head>
+
+<body>
+    <h1>Todos</h1>
+
+    <ul id="list"></ul>
+
+    <label>
+        new task name
+        <input id="input-name" />
+        <button id="add-button">click to add new task</button>
+    </label>
+
+    <script>
+        var listElement = document.getElementById("list");
+        var inputNameElement = document.getElementById("input-name");
+        var addButtonElement = document.getElementById("add-button");
+
+        addButtonElement.addEventListener("click", addTodoName);
+
+        function addTodoName(event) {
+            var inputName = inputNameElement.value;
+            
+            var listItemElement = document.createElement("li");
+            listItemElement.innerText = inputName;
+
+            listElement.appendChild(listItemElement);
+        }
+    </script>
+</body>
+
+</html>
